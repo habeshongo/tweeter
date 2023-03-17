@@ -1,0 +1,29 @@
+nav {
+  height: 120 px;
+  width: 100%;
+  color: #ffffff;
+  background-color: #4056a1;
+  display: flex;
+  padding: 0 1.5em;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+}
+
+.headerRightSide {
+  flex-direction: column;
+}
+
+.downArrows {
+  display: flex;
+  justify-content: center;
+  color: red;
+}
+
+.headerTitle {
+  font-family: bungee;
+}
+
+.navMessage {
+  font: sans-serif;
+}
