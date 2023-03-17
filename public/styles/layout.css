@@ -6,7 +6,9 @@
 html {
   box-sizing: border-box;
 }
-*, *:before, *:after {
+*,
+*:before,
+*:after {
   box-sizing: inherit;
 }
 
@@ -14,12 +16,27 @@ html {
  * Global layout stuff
  */
 
+/*
+ * Additional CSS can be defined below or in other CSS files, as per instructions
+ */
 body {
   color: #545149;
   background-color: #f4f1ec;
   font-size: 24px;
+  font-family: "Source Sans Pro", sans-serif;
+  background-image: url("../brick-wall.png");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
 }
 
-/*
- * Additional CSS can be defined below or in other CSS files, as per instructions
- */
+.container {
+  width: 90% align;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url("../brick-wall.png");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
