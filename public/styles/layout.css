@@ -31,12 +31,9 @@ body {
 }
 
 .container {
-  width: 90% align;
+  width: 90%;
+  margin: 0 auto;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: url("../brick-wall.png");
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-size: cover;
 }
