@@ -22,3 +22,25 @@
 #like:hover {
   color: red;
 }
+
+.upper-left {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 10px;
+}
+
+.tweet-body {
+  display: flex;
+  justify-content: space-between;
+}
+
+.tweet-content {
+  padding: 50px;
+  border-bottom: 2px solid black;
+}
+
+.tweet-footer {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 20px;
+}
