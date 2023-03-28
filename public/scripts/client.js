@@ -4,6 +4,12 @@
  * Reminder: Use (and do all your DOM work in) jQuery's document ready function
  */
 
+// Identify the date and time of the tweet
+const tweetDate = new Date();
+//Convert the tweet's timestamp to a human-readable format.
+//This method takes two arguments: the date and time of the tweet, and the current time.
+//const timeAgo = timeago.format(tweetDate, new Date());
+
 const createTweetElement = function (obj) {
   console.log(obj);
   const str = `<article class="tweet">
@@ -20,7 +26,7 @@ const createTweetElement = function (obj) {
             </div>
             <p class="tweet-content">${obj.content.text}</p>
             <footer class="tweet-footer">
-              <div>${obj.created_at}</div>
+              <div>${timeago.format(obj.created_at)}</div>
 
               <div>
                 <i id="flag" class="fa-solid fa-flag"></i>
@@ -31,51 +37,6 @@ const createTweetElement = function (obj) {
           </article>`;
   return str;
 };
-
-// const tweetData = {
-//   user: {
-//     name: "Newton",
-//     avatars: "https://i.imgur.com/73hZDYK.png",
-//     handle: "@SirIsaac",
-//   },
-//   content: {
-//     text: "If I have seen further it is by standing on the shoulders of giants",
-//   },
-//   created_at: 1461116232227,
-// };
-
-// $(document).ready(function () {
-//   const newTweet = createTweetElement(tweetData);
-//   // Test / driver code (temporary)
-//   console.log(newTweet); // to see what it looks like
-//   $("#tweets-container").append(newTweet); // to add it to the page so we can make sure it's got all the right elements, classes, etc.
-// });
-
-// Fake data taken from initial-tweets.json
-const data = [
-  {
-    user: {
-      name: "Newton",
-      avatars: "https://i.imgur.com/73hZDYK.png",
-      handle: "@SirIsaac",
-    },
-    content: {
-      text: "If I have seen further it is by standing on the shoulders of giants",
-    },
-    created_at: 1461116232227,
-  },
-  {
-    user: {
-      name: "Descartes",
-      avatars: "https://i.imgur.com/nlhLi3I.png",
-      handle: "@rd",
-    },
-    content: {
-      text: "Je pense , donc je suis",
-    },
-    created_at: 1461113959088,
-  },
-];
 
 const renderTweets = function (tweets) {
   // loops through tweets
@@ -121,7 +82,7 @@ $(document).ready(function () {
       dataType: "json", //The response should be treated as JSON data.
       success: function (tweets) {
         //Do something with the array of tweets if the request succeeds.
-        renderTweets(loadTweets); /* ** I am not sure if this is correct.** */
+        renderTweets(tweets); /* **I am not sure if this is correct.** */
       },
       error: function (xhr, status, error) {
         console.error("Error loading tweets:", error);
@@ -129,5 +90,5 @@ $(document).ready(function () {
     });
   }
 
-  renderTweets(data);
+  loadTweets();
 });
