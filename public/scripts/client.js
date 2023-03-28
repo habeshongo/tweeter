@@ -3,16 +3,9 @@
  * jQuery is already loaded
  * Reminder: Use (and do all your DOM work in) jQuery's document ready function
  */
-
-// Identify the date and time of the tweet
-const tweetDate = new Date();
-//Convert the tweet's timestamp to a human-readable format.
-//This method takes two arguments: the date and time of the tweet, and the current time.
-//const timeAgo = timeago.format(tweetDate, new Date());
-
-const createTweetElement = function (obj) {
-  console.log(obj);
-  const str = `<article class="tweet">
+$(document).ready(function () {
+  const createTweetElement = function (obj) {
+    const str = `<article class="tweet">
             <div class="tweet-body">
               <div class="upper-left">
                 <img
@@ -35,60 +28,67 @@ const createTweetElement = function (obj) {
               </div>
             </footer>
           </article>`;
-  return str;
-};
+    return str;
+  };
 
-const renderTweets = function (tweets) {
-  // loops through tweets
-  for (const element of tweets) {
-    // calls createTweetElement for each tweet
-    $("#tweets-container").append(createTweetElement(element));
+  const renderTweets = function (tweets) {
+    //Emptying the container in index.html file.
+    $("#tweets-text").empty();
+    // loops through tweets
+    for (let element of tweets) {
+      // calls createTweetElement for each tweet
+      $("#tweets-container").prepend(createTweetElement(element));
+    }
+    // takes return value and appends it to the tweets container
+  };
+
+  /*The loadtweets function will use jQuery to make a request to /tweets and receive the array of tweets as JSON. */
+  function loadTweets() {
+    return $.ajax({
+      url: "http://localhost:8080/tweets",
+      method: "GET",
+    }).then((response) => {
+      renderTweets(response);
+    });
   }
-  // takes return value and appends it to the tweets container
-};
 
-//Emptying the container in index.htl file.
-let container = document.getElementsByClassName("container");
-container.innerHTML = "";
+  const isTweetValid = function (data) {
+    const $tweetText = data;
+    const size = $tweetText.length;
+    if (size <= 0) {
+      return { status: false, message: "Your tweet is empty!" };
+    } else if (size > 140) {
+      console.log(size);
+      return { status: false, message: "Your tweet is too long!" };
+    } else {
+      return { status: true };
+    }
+  };
 
-/*
-Adding an event listener to all 'form' elements using jQuery's on() method.
-When the form is submitted, the event handler function is called, and we're preventing the default behaviour of the form submission using event.preventDefault(). 
-I can then add my own code inside the handler function to perform any desired actions instead of the default form submission behaviour.
-*/
-$(document).ready(function () {
   $("form").on("submit", function (event) {
     //Prevent the default form submission using the event.preventDefault() method.
     event.preventDefault();
-    //Serialize the form data using the $(this).serialize() method, which converts the form data into a query string.
-    let finalformData = $(this).serialize();
-    console.log(finalformData);
-
-    // The $.ajax() method to send the form data to the server as a POST request.
-    // Form data send to server as a query string.
-    //https://api.jquery.com/jQuery.post/
-    $.ajax({
-      type: "POST",
-      url: "/tweets",
-      data: finalformData,
-    });
+    const tweetText = $("#tweet-text").val();
+    console.log("testing testing 123");
+    const tweetFailedMessage = isTweetValid(tweetText).message;
+    if (tweetFailedMessage) {
+      return alert(tweetFailedMessage);
+    } else {
+      $.ajax({
+        url: "/tweets",
+        method: "POST",
+        data: $(this).serialize(),
+      })
+        .then(() => {
+          $("#tweet-text").val("");
+          return loadTweets();
+        })
+        .catch((error) => {
+          alert("Somthing went wrong!!");
+          console.error(error);
+        });
+    }
   });
-  /*----------------------------------------------------- */
-  /*The loadtweets function will use jQuery to make a request to /tweets and receive the array of tweets as JSON. */
-  function loadTweets() {
-    $.ajax({
-      url: "http://localhost:8080/tweets", //Make a GET request to http://localhost:8080/tweets.
-      method: "GET",
-      dataType: "json", //The response should be treated as JSON data.
-      success: function (tweets) {
-        //Do something with the array of tweets if the request succeeds.
-        renderTweets(tweets); /* **I am not sure if this is correct.** */
-      },
-      error: function (xhr, status, error) {
-        console.error("Error loading tweets:", error);
-      },
-    });
-  }
 
   loadTweets();
 });
