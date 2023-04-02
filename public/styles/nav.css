@@ -1,13 +1,15 @@
-nav {
-  height: 120 px;
-  width: 100%;
+.header-nav {
+  height: 120px;
   color: #ffffff;
   background-color: #4056a1;
+  padding: 1.5em 0;
+  position: sticky;
+  top: 0;
+}
+nav {
   display: flex;
-  padding: 0 1.5em;
   justify-content: space-between;
   align-items: center;
-  position: fixed;
 }
 
 .headerRightSide {
