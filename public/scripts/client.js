@@ -4,6 +4,12 @@
  * Reminder: Use (and do all your DOM work in) jQuery's document ready function
  */
 $(document).ready(function () {
+  const escape = function (str) {
+    let div = document.createElement("div");
+    div.appendChild(document.createTextNode(str));
+    return div.innerHTML;
+  };
+
   const createTweetElement = function (obj) {
     const str = `<article class="tweet">
             <div class="tweet-body">
@@ -17,7 +23,7 @@ $(document).ready(function () {
               </div>
               <p class="handle">${obj.user.handle}</p>
             </div>
-            <p class="tweet-content">${obj.content.text}</p>
+            <p class="tweet-content">${escape(obj.content.text)}</p>
             <footer class="tweet-footer">
               <div>${timeago.format(obj.created_at)}</div>
 
@@ -56,13 +62,19 @@ $(document).ready(function () {
     const $tweetText = data;
     const size = $tweetText.length;
     if (size <= 0) {
+      // $(".validation").slideDown(); // Slide the error message into view
       return { status: false, message: "Your tweet is empty!" };
     } else if (size > 140) {
-      console.log(size);
+      // $(".validation").slideDown(); // Slide the error message into view
       return { status: false, message: "Your tweet is too long!" };
     } else {
       return { status: true };
     }
+  };
+
+  const displayError = function (message) {
+    $(".error-message").html(message);
+    return $(".error-message").slideDown("slow");
   };
 
   $("form").on("submit", function (event) {
@@ -72,7 +84,9 @@ $(document).ready(function () {
     console.log("testing testing 123");
     const tweetFailedMessage = isTweetValid(tweetText).message;
     if (tweetFailedMessage) {
-      return alert(tweetFailedMessage);
+      // return alert(tweetFailedMessage);
+      displayError(tweetFailedMessage);
+      console.log(tweetFailedMessage);
     } else {
       $.ajax({
         url: "/tweets",
