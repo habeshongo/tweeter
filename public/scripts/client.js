@@ -40,18 +40,18 @@ $(document).ready(function () {
   const renderTweets = function (tweets) {
     //Emptying the container in index.html file.
     $("#tweets-text").empty();
+    $("#tweets-container").empty();
     // loops through tweets
     for (let element of tweets) {
       // calls createTweetElement for each tweet
       $("#tweets-container").prepend(createTweetElement(element));
     }
-    // takes return value and appends it to the tweets container
   };
 
   /*The loadtweets function will use jQuery to make a request to /tweets and receive the array of tweets as JSON. */
   function loadTweets() {
     return $.ajax({
-      url: "http://localhost:8080/tweets",
+      url: "/tweets",
       method: "GET",
     }).then((response) => {
       renderTweets(response);
@@ -72,12 +72,18 @@ $(document).ready(function () {
     }
   };
 
+  const clearError = function () {
+    $(".error-message").html(" ");
+    $(".error-message").slideUp("slow");
+  };
+
   const displayError = function (message) {
     $(".error-message").html(message);
     return $(".error-message").slideDown("slow");
   };
 
   $("form").on("submit", function (event) {
+    clearError();
     //Prevent the default form submission using the event.preventDefault() method.
     event.preventDefault();
     const tweetText = $("#tweet-text").val();
